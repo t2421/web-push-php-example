@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const applicationServerKey = "BCmti7ScwxxVAlB7WAyxoOXtV7J8vVCXwEDIFXjKvD-ma-yJx_eHJLdADyyzzTKRGb395bSAtxlh4wuDycO3Ih4";
+    const applicationServerKey = "BDbxFig-GRB7J-5tsr3sj7DRAPMz2W-EOiaP6p9lZJ6LFFBPeKNt-q0BiDUP59edjeV8_ZwEp9yJNz4mcfBKSC4";
     let isPushEnabled = false;
 
     const pushButton = document.querySelector('#push-subscription-button');
@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function changePushButtonState (state) {
+        console.log(state);
         switch (state) {
             case 'enabled':
                 pushButton.disabled = false;
@@ -122,17 +123,18 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //push通知登録状況のチェック
     function push_updateSubscription() {
         navigator.serviceWorker.ready.then(serviceWorkerRegistration => serviceWorkerRegistration.pushManager.getSubscription())
         .then(subscription => {
             changePushButtonState('disabled');
-
+            console.log(subscription)
             if (!subscription) {
-                // We aren't subscribed to push, so set UI to allow the user to enable push
+                //push通知が許可されていない
                 return;
             }
 
-            // Keep your server in sync with the latest endpoint
+            // push通知が許可されている
             return push_sendSubscriptionToServer(subscription, 'PUT');
         })
         .then(subscription => subscription && changePushButtonState('enabled')) // Set your UI to show they have subscribed for push messages
@@ -172,15 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    //　PushSubscriptionの値を使ってサーバーに情報を送信する
+    //  methodによりサーバー側の処理を切り分ける
     function push_sendSubscriptionToServer(subscription, method) {
         const key = subscription.getKey('p256dh');
         const token = subscription.getKey('auth');
         const contentEncoding = (PushManager.supportedContentEncodings || ['aesgcm'])[0];
+        console.log(contentEncoding,PushManager.supportedContentEncodings)
 
         return fetch('push_subscription.php', {
             method,
             body: JSON.stringify({
                 endpoint: subscription.endpoint,
+                //ArrayBufferでかえってきているものを文字列に変換する
                 publicKey: key ? btoa(String.fromCharCode.apply(null, new Uint8Array(key))) : null,
                 authToken: token ? btoa(String.fromCharCode.apply(null, new Uint8Array(token))) : null,
                 contentEncoding,

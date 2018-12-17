@@ -1,12 +1,13 @@
 <?php
-$subscription = json_decode(file_get_contents('php://input'), true);
+$subscription = array(
+    "endpoint" => "https://fcm.googleapis.com/fcm/send/drmy2kUJyuE:APA91bGwSQeZoes96uJbT33-S5V9UYjA_yLK6PLBN4Ce06aJ5PTaXfGmhZl9yr_33O_ANaHhK8Kk8XhYYPF9QBAh4En4o2wxvYxboV32l_SAbQ5lE05EcAJQW6mjWi7Rj7U_PdSZj-vd",
+    "authToken" => "6tAZBSpnDn1DTh63Mty5RQ",
+    "contentEncoding" => "aes128gcm",
+    "publicKey"=>"BE5vqMscz1TpKAQW875RppootqL8uUwbNpNXkhS3JkHVY98fngOP2OwYrD9RR8careHNLFgsNpkj7JQYR7ZMb8U="
+);
 
-if (!isset($subscription['endpoint'])) {
-    echo 'Error: not a subscription';
-    return;
-}
 
-$method = $_SERVER['REQUEST_METHOD'];
+$method = "DELETE";
 $json = json_decode(file_get_contents(__DIR__.'/data/database.json'));
 
 switch ($method) {

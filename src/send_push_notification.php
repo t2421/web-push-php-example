@@ -11,8 +11,8 @@ $subscription = Subscription::create(json_decode(file_get_contents('php://input'
 $auth = array(
     'VAPID' => array(
         'subject' => 'https://github.com/Minishlink/web-push-php-example/',
-        'publicKey' => 'BCmti7ScwxxVAlB7WAyxoOXtV7J8vVCXwEDIFXjKvD-ma-yJx_eHJLdADyyzzTKRGb395bSAtxlh4wuDycO3Ih4',
-        'privateKey' => 'HJweeF64L35gw5YLECa-K7hwp3LLfcKtpdRNK8C_fPQ', // in the real world, this would be in a secret file
+        'publicKey' => 'BDbxFig-GRB7J-5tsr3sj7DRAPMz2W-EOiaP6p9lZJ6LFFBPeKNt-q0BiDUP59edjeV8_ZwEp9yJNz4mcfBKSC4',
+        'privateKey' => 'O1g6R3pcKbyXkSBgz1drPpwtXc3GFV_9MyUDPyMMa8g', // in the real world, this would be in a secret file
     ),
 );
 
